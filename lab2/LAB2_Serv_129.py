@@ -20,7 +20,7 @@ def Main():
         print("from connected user: " + data)
         data = data.upper()
         print("sending: " + data)
-        c.send(bytes("*" + data + "*", "utf-8"))
+        c.send(bytes("* " + data + " *", "utf-8"))
     c.close()
 if __name__ == '__main__':
     Main()

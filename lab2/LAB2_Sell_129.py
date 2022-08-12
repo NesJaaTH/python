@@ -3,70 +3,70 @@ import time
 import calendar
 import os
 
+
 def Menu(order):
     
     localtime = time.asctime(time.localtime(time.time()))
-    Water = 7
-    Coke = 10
-    Milk = 35
-    Sandwich = 25
-    order = order
-    itw = 0
-    itc = 0
-    itm = 0
-    itsw = 0
+    itembaht = [7,10,35,25]
+    itemcount = [0,0,0,0]
+    itembuycount = [0,0,0,0]
+
     os.system("cls")
+
     while True:
         print("MADBOY-SHOP \t",  localtime,"\tOrder ID =", order)
-
         print("Menu","\t\tPrice")
-        print("Water\t\t", Water,"\tBaht\nCoke\t\t", Coke,"\tBaht\nMilk\t\t", Milk,"\tBaht\nSandwich\t", Sandwich,"\tBaht")
+        print("1.Water\t\t", itembaht[0],"\tBaht\n2.Coke\t\t", itembaht[1],"\tBaht\n3.Milk\t\t", itembaht[2],"\tBaht\n4.Sandwich\t", itembaht[3],"\tBaht")
         Seitem = int(input("Select Item 1 - 4 or Go to receipt sum price enter 0 (Zero) = "))
         if Seitem == 0:
-            print("tset")
             os.system("cls")
-            sellout(order,localtime,itw,itc,itm,itsw)
+            itembuycount[0] = itemcount[0] * itembaht[0]
+            itembuycount[1] = itemcount[1] * itembaht[1]
+            itembuycount[2] = itemcount[2] * itembaht[2]
+            itembuycount[3] = itemcount[3] * itembaht[3]
+            sellout(order,localtime,itemcount,itembuycount)
         elif Seitem == 1:
             seitemW = int(input("Please input number = "))
-            itw += seitemW
+            itemcount[0] += seitemW
             os.system("cls")
         elif Seitem == 2:
             seitemC = int(input("Please input number = "))
-            itc += seitemC
+            itemcount[1] += seitemC
             os.system("cls")
         elif Seitem == 3:
             seitemM = int(input("Please input number = "))
-            itm += seitemM
+            itemcount[2] += seitemM
             os.system("cls")
         elif Seitem == 4:
             seitemSW = int(input("Please input number = "))
-            itsw += seitemSW
+            itemcount[3] += seitemSW
             os.system("cls")
-
-def sellout(order,time,itw,itc,itm,itsw):
-    time = time
-    order = order
-    itw = itw
-    itwsm = 1
-    itc = itc
-    itcsm = 1
-    itm = itm
-    itmsm = 1
-    itsw = itsw
-    itswsm = 1
-    sellcout = 1
-    sumsell = 1
-    vat = 1.89
-    sellprice = 100
-    print(time,"\nOrder ID = ",order)
-    print("ITEM :\n\t Water\t\t X ",itw,"\t",itwsm,"Baht","\n\t Coke\t\t X ",itc,"\t",itcsm,"Baht","\n\t Milk\t\t X ",itm,"\t",itmsm,"Baht","\n\t Sandwich\t X ",itsw,"\t",itswsm,"Baht")
-    print("\n\t sum", sellcout," Item","\t", sumsell," Baht")
-    print("\n\t Vat 7%\t",vat,"\t\t",sellprice,"Baht")
-    neworder = input("\t New Order [N]")
-    neworder = neworder.upper()
-    if neworder == "N":
-        order += 1
-        Menu(order)
+        else:
+            os.system("cls")
+            print("ERROR \tPlease Select Number 1 - 4 not input letter")
+            time.sleep(3)
+            os.system("cls")
+            
+def sellout(order,times,itemcount,itembuycount):
+    sellcount = itemcount[0] + itemcount[1] + itemcount[2] + itemcount[3]
+    sumsell = itembuycount[0] + itembuycount[1] + itembuycount[2] + itembuycount[3]
+    pvat = sumsell + ( sumsell * 7 ) / 100
+    vat = pvat - sumsell
+    while True:
+        print(times,"\nOrder ID = ",order)
+        print("ITEM :\n\t Water\t\t X ",itemcount[0],"\t",itembuycount[0],"Baht","\n\t Coke\t\t X ",itemcount[1],"\t",itembuycount[1],"Baht","\n\t Milk\t\t X ",itemcount[2],"\t",itembuycount[2],"Baht","\n\t Sandwich\t X ",itemcount[3],"\t",itembuycount[3],"Baht")
+        print("\n\t sum", sellcount," Item","\t", sumsell," Baht")
+        print("\n\t Vat 7%\t",format(vat,".2f"),"\t\t",pvat,"Baht")
+        neworder = input("\t New Order [N]")
+        neworder = neworder.upper()
+        if neworder == "N":
+            order += 1
+            Menu(order)
+        elif neworder != "N" :
+            os.system("cls")
+            print("ERROR Please input N to Neworder")
+            time.sleep(3)
+            os.system("cls")
 
 if __name__ == '__main__':
     order = 1000
