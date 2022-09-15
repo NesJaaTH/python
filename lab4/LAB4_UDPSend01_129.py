@@ -5,7 +5,7 @@ import socket
 for pings in range(10):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(1)
-    message = "test"
+    message = b"test"
     addr = ('127.0.0.1', 12000)
 
     start = time.time()
@@ -14,7 +14,7 @@ for pings in range(10):
         data, server = sock.recvfrom(1024)
         end = time.time()
         elapsed = end - start
-        print("%s %d %d" % (data, pings, elapsed))
+        print("%s %d %d" % (data.decode("utf-8"), pings, elapsed))
 
     except timeout:
         print("REQUEST TIMED OUT")

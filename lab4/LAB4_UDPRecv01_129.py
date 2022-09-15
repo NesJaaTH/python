@@ -2,7 +2,7 @@ import random
 from socket import *
 
 serverSocket = socket(AF_INET, SOCK_DGRAM)
-serverSocket.bind(("127.0.0.1", 12000))
+serverSocket.bind(("", 12000))
 print("UDP SERVER START!")
 while True:
     rand = random.randint(0, 10)
