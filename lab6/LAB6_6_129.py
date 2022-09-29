@@ -18,12 +18,6 @@ def on_message(client, userdata, msg):
     data_ = msg.payload
     datatrue = data_.decode("utf-8")
     print(datatrue)
-    if datatrue == "Toggle On Push":
-        statusbutton = "Toggle On Push"
-        sensor_data["statusbutton"] = statusbutton
-        print(json.dumps({"data": sensor_data}))
-        client.publish("@shadow/data/update",
-                           json.dumps({"data": sensor_data}), 1)
 
 client = mqtt.Client(protocol=mqtt.MQTTv311,client_id=CLIENT_ID, clean_session=True)
 client.username_pw_set(DEVICE_TOKEN)

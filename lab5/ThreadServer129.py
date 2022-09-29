@@ -1,9 +1,10 @@
 from distutils.log import error
 from http import client
+from logging.config import listen
 import socket
 import threading
 import os
-
+import time
 class ThreadedServer(object):
     def __init__(self, host, port):
         self.host = host
@@ -17,24 +18,28 @@ class ThreadedServer(object):
         print("---------------Wait Client-------------------")
         self.sock.listen(1)
         while True:
+            clientnumber += 1
             client, address = self.sock.accept()
-            print("Client Connected","address = ", address[0],"Port = ",address[1])
+            print("Client Connected","address = ", address[0],"Port = ",address[1],"อันดับการติดต่อ", str(clientnumber))
             clientconnect = "Welcome to Server ON"
-            client.send(bytes(clientconnect,"utf-8"))
-            clientnumber + 1
+            clientconnect1 = "อันดับการติดต่อ"
+            client.send(bytes(f"{clientconnect},{clientconnect1},{str(clientnumber)},{address[0]},{address[1]}","utf-8"))
             client.settimeout(60)
             threading.Thread(target=self.listenToClient,
                              args=(client, address)).start()
 
     def listenToClient(self, client, address):
-        size = 1024
+        size = 4096
         while True:
             try:
-                data = client.recv(size)
+                data = client.recv(size).decode("utf-8").split(",")
                 if data:
                     # Set the response to echo back the recieved data
-                    response = data
-                    client.send(response)
+                    print(f"อันดับเครื่องที่ส่ง {data[1]} IP = {data[2]} Port = {data[3]}\nข้อความที่ส่งมา = {data[0]}")
+                    print("----------------------------------------------------------------------------")
+                    response1 = "เครืองที่ส่ง " + str(data[1])
+                    response2 = "ข้อความ " + str(data[0])
+                    client.send(bytes(f"{response1},{response2}","utf-8"))
                 else:
                     raise error('Client disconnected')
 
