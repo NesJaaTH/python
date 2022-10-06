@@ -1,4 +1,5 @@
 from ast import While
+from re import T
 import time
 import paho.mqtt.client as mqtt
 import random
@@ -22,6 +23,7 @@ def on_connect(client, userdata, flags, rc):
 def on_message(client, userdata, msg):
     data_ = msg.payload
     data = data_.decode("utf-8")
+    print(data)
     if (data == "ontoggle") :
         print("on")
         sensor_data["dataswitch"] = "ontoggle"
@@ -32,11 +34,15 @@ def on_message(client, userdata, msg):
         client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
     if (data == "BlinkLED2"):
         print("tes")
+    elif data == "TEST0":
+        sensor_data["dataswitch"] = "TEST0"
+        client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
     elif data == "Reset":
-        while True:
-            client.on_message = on_message
-            if data == "BlinkLED2":
-                break
+        sensor_data["dataswitch"] = "Reset"
+        client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
+    elif data == "TEST1":
+        sensor_data["dataswitch"] = "TEST1"
+        client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
 
 
             
@@ -49,23 +55,20 @@ client.on_message = on_message
 client.connect(NETPIE_HOST, 1883)
 client.loop_start()
 try:
-    laepu = True
     while True:
-        if(laepu == False):
-                print("Button Pressed")
-                print("on")
-                sensor_data["dataswitch"] = datasend  
-                client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
-        elif(sensor_data["dataswitch"] == "offtoggle"):
-                print("Waiting for you to press a button")
-                print("off")
-                datasend = "offtoggle"
-                sensor_data["dataswitchsw"] = datasend
-                client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
-                time.sleep(0.1)
-        time.sleep(3)
+                #sensor_data["dataswitch"] = "testz"  
+                #client.publish("@shadow/data/update",json.dumps({"data": sensor_data}), 1)
+                print("test")
+                time.sleep(5)
+                if sensor_data["dataswitch"] == "Reset":
+                    print("time1")
+                    time.sleep(2)
+                elif sensor_data["dataswitch"] == "TEST0":
+                    print("time2")
+                    time.sleep(2)
+                elif sensor_data["dataswitch"] == "TEST1":
+                    sensor_data["dataswitch"] = "testz"  
+                    
 
 except KeyboardInterrupt:
     pass
-
-
